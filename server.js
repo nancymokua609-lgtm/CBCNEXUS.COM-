@@ -178,6 +178,53 @@ async function handleApi(req, res, url) {
     return true;
   }
 
+  if (req.method === "GET" && url.pathname.startsWith("/api/resources")) {
+    const searchParams = new URLSearchParams(url.search);
+    const grade = searchParams.get("grade");
+    const subject = searchParams.get("subject");
+    const type = searchParams.get("type");
+
+    const resources = await readJsonStore("projects.json");
+    let filtered = resources;
+
+    if (grade) filtered = filtered.filter(r => r.grade === grade);
+    if (subject) filtered = filtered.filter(r => r.subject === subject);
+    if (type) filtered = filtered.filter(r => r.type === type);
+
+    sendJson(res, 200, filtered);
+    return true;
+  }
+
+  if (req.method === "GET" && url.pathname.startsWith("/api/grades")) {
+    const grades = ["Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6",
+                   "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"];
+    sendJson(res, 200, { grades });
+    return true;
+  }
+
+  if (req.method === "GET" && url.pathname.startsWith("/api/subjects")) {
+    const searchParams = new URLSearchParams(url.search);
+    const grade = searchParams.get("grade") || "Grade 1";
+
+    const subjects = {
+      "Grade 1": ["Mathematics", "English", "Science", "Social Studies"],
+      "Grade 2": ["Mathematics", "English", "Science", "Social Studies"],
+      "Grade 3": ["Mathematics", "English", "Science", "Social Studies"],
+      "Grade 4": ["Mathematics", "English", "Science", "Social Studies"],
+      "Grade 5": ["Mathematics", "English", "Science", "Social Studies"],
+      "Grade 6": ["Mathematics", "English", "Science", "Social Studies"],
+      "Grade 7": ["Mathematics", "English", "Integrated Science", "Social Studies"],
+      "Grade 8": ["Mathematics", "English", "Integrated Science", "Social Studies"],
+      "Grade 9": ["Mathematics", "English", "Integrated Science", "Social Studies"],
+      "Grade 10": ["Mathematics", "English", "Biology", "Chemistry", "Physics"],
+      "Grade 11": ["Mathematics", "English", "Biology", "Chemistry", "Physics"],
+      "Grade 12": ["Mathematics", "English", "Biology", "Chemistry", "Physics"]
+    };
+
+    sendJson(res, 200, { subjects: subjects[grade] || [] });
+    return true;
+  }
+
   return false;
 }
 

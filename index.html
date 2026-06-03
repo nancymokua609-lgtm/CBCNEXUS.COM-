@@ -65,19 +65,19 @@
 
       <div class="resource-menu" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem; background: #f8f9fa; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="#tuition" class="secondary-button" style="text-align: center;">📚 Notes</a>
-          <a href="#tuition" class="secondary-button" style="text-align: center;">📋 Schemes of Work</a>
-          <a href="#tuition" class="secondary-button" style="text-align: center;">🎓 Lesson Plans</a>
-          <a href="#tuition" class="secondary-button" style="text-align: center;">📝 Records of Work</a>
-          <a href="#tuition" class="secondary-button" style="text-align: center;">✅ Assessment Tests</a>
-          <a href="#tuition" class="secondary-button" style="text-align: center;">❓ Topical Questions</a>
+          <a href="#resources?type=Notes" class="secondary-button" style="text-align: center;">📚 Notes</a>
+          <a href="#resources?type=Schemes of Work" class="secondary-button" style="text-align: center;">📋 Schemes of Work</a>
+          <a href="#resources?type=Lesson Plan" class="secondary-button" style="text-align: center;">🎓 Lesson Plans</a>
+          <a href="#resources?type=Records of Work" class="secondary-button" style="text-align: center;">📝 Records of Work</a>
+          <a href="#resources?type=Assessment Test" class="secondary-button" style="text-align: center;">✅ Assessment Tests</a>
+          <a href="#resources?type=Topical Questions" class="secondary-button" style="text-align: center;">❓ Topical Questions</a>
         </div>
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="#tuition" class="secondary-button" style="text-align: center;">📖 Holiday Workbooks</a>
-          <a href="#tuition" class="secondary-button" style="text-align: center;">📄 Past Papers</a>
-          <a href="#cbcProjects" class="secondary-button" style="text-align: center;">🏗️ CBC Projects</a>
-          <a href="#tuition" class="secondary-button" style="text-align: center;">📚 Study Guides</a>
-          <a href="#holidayTuition" class="secondary-button" style="text-align: center;">🌟 Holiday Tuition</a>
+          <a href="#resources?type=Holiday Workbooks" class="secondary-button" style="text-align: center;">📖 Holiday Workbooks</a>
+          <a href="#resources?type=Past Papers" class="secondary-button" style="text-align: center;">📄 Past Papers</a>
+          <a href="#resources?type=Projects" class="secondary-button" style="text-align: center;">🏗️ CBC Projects</a>
+          <a href="#resources?type=Study Guides" class="secondary-button" style="text-align: center;">📚 Study Guides</a>
+          <a href="#tuition" class="secondary-button" style="text-align: center;">🌟 Holiday Tuition</a>
         </div>
       </div>
 
@@ -108,7 +108,50 @@
         </div>
       </section>
 
-      <section id="sellEarn" class="promo-band">
+      <section id="resources" class="content-band">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Teaching and learning materials</p>
+            <h2>Browse Resources by Grade & Subject</h2>
+          </div>
+        </div>
+
+        <div class="filters" aria-label="Resource filters" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <label>
+            Grade
+            <select id="gradeFilter">
+              <option value="">All Grades</option>
+            </select>
+          </label>
+          <label>
+            Subject
+            <select id="subjectFilter">
+              <option value="">All Subjects</option>
+            </select>
+          </label>
+          <label>
+            Material Type
+            <select id="typeFilter">
+              <option value="">All Materials</option>
+              <option value="Notes">Notes</option>
+              <option value="Schemes of Work">Schemes of Work</option>
+              <option value="Lesson Plan">Lesson Plans</option>
+              <option value="Records of Work">Records of Work</option>
+              <option value="Assessment Test">Assessment Tests</option>
+              <option value="Topical Questions">Topical Questions</option>
+              <option value="Holiday Workbooks">Holiday Workbooks</option>
+              <option value="Past Papers">Past Papers</option>
+              <option value="Projects">CBC Projects</option>
+              <option value="Study Guides">Study Guides</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="activeContext" class="active-context" aria-live="polite" style="margin-bottom: 1rem; font-weight: bold;"></div>
+        <div id="resourceGrid" class="resource-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
+      </section>
+
+      <section class="trust-band" aria-label="Trust and support">
         <div class="promo-layout">
           <div>
             <p class="eyebrow">Creator program</p>

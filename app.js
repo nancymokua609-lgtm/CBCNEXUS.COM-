@@ -1701,7 +1701,104 @@ if (adminBand && !adminBand.querySelector(".logout-btn")) {
     layout.appendChild(logoutBtn);
   }
 }
-setupFilters();
+
+async function loadGrades() {
+  try {
+    const res = await fetch("/api/grades");
+    const data = await res.json();
+    const gradeSelect = document.getElementById("gradeFilter");
+    if (gradeSelect && data.grades) {
+      data.grades.forEach(grade => {
+        const option = document.createElement("option");
+        option.value = grade;
+        option.textContent = grade;
+        gradeSelect.appendChild(option);
+      });
+    }
+  } catch (error) {
+    console.error("Error loading grades:", error);
+  }
+}
+
+async function loadSubjects(grade = "Grade 1") {
+  try {
+    const res = await fetch(`/api/subjects?grade=${encodeURIComponent(grade)}`);
+    const data = await res.json();
+    const subjectSelect = document.getElementById("subjectFilter");
+    if (subjectSelect) {
+      subjectSelect.innerHTML = '<option value="">All Subjects</option>';
+      if (data.subjects) {
+        data.subjects.forEach(subject => {
+          const option = document.createElement("option");
+          option.value = subject;
+          option.textContent = subject;
+          subjectSelect.appendChild(option);
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error loading subjects:", error);
+  }
+}
+
+async function loadResources(grade = "", subject = "", type = "") {
+  try {
+    const params = new URLSearchParams();
+    if (grade) params.append("grade", grade);
+    if (subject) params.append("subject", subject);
+    if (type) params.append("type", type);
+
+    const res = await fetch(`/api/resources?${params}`);
+    const resources = await res.json();
+
+    const grid = document.getElementById("resourceGrid");
+    const context = document.getElementById("activeContext");
+
+    if (!grid) return;
+
+    if (resources.length === 0) {
+      grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; padding: 2rem;'>No resources found</p>";
+      if (context) context.textContent = "No resources match your filters";
+      return;
+    }
+
+    grid.innerHTML = resources.map(r => `
+      <div style="border: 1px solid #ddd; padding: 1rem; border-radius: 8px; background: white;">
+        <h3>${r.title || "Resource"}</h3>
+        <p><strong>Grade:</strong> ${r.grade || "N/A"}</p>
+        <p><strong>Subject:</strong> ${r.subject || "N/A"}</p>
+        <p><strong>Type:</strong> ${r.type || "N/A"}</p>
+        <p>${r.description || "No description available"}</p>
+        ${r.price ? `<p style="color: #0066cc; font-weight: bold;">KES ${r.price}</p>` : ""}
+        <button class="primary-button" style="width: 100%; margin-top: 1rem;">View Resource</button>
+      </div>
+    `).join("");
+
+    if (context) {
+      const filters = [grade || "All Grades", subject || "All Subjects", type || "All Materials"].join(" • ");
+      context.textContent = `Showing ${resources.length} resource(s): ${filters}`;
+    }
+  } catch (error) {
+    console.error("Error loading resources:", error);
+  }
+}
+
+document.getElementById("gradeFilter")?.addEventListener("change", (e) => {
+  loadSubjects(e.target.value || "Grade 1");
+  loadResources(e.target.value, document.getElementById("subjectFilter")?.value, document.getElementById("typeFilter")?.value);
+});
+
+document.getElementById("subjectFilter")?.addEventListener("change", (e) => {
+  loadResources(document.getElementById("gradeFilter")?.value, e.target.value, document.getElementById("typeFilter")?.value);
+});
+
+document.getElementById("typeFilter")?.addEventListener("change", (e) => {
+  loadResources(document.getElementById("gradeFilter")?.value, document.getElementById("subjectFilter")?.value, e.target.value);
+});
+
+loadGrades();
+loadSubjects();
+loadResources();
 renderQuickTypes();
 restoreAdminAccess();
 initializeAdminSession();

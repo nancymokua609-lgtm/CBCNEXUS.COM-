@@ -7,6 +7,13 @@ const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, "backend-data");
 const MAX_BODY_SIZE = 12 * 1024 * 1024;
 
+const ADMIN_EMAIL = "moseisaac9@gmail.com";
+const ADMIN_USERNAME = "ISAAC";
+const ADMIN_PASSWORD = "mose23";
+const ADMIN_SESSION_DURATION = 24 * 60 * 60 * 1000;
+
+const sessions = new Map();
+
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -91,6 +98,36 @@ function homeworkResponse(payload) {
   ].join(" ");
 }
 
+function generateSessionId() {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+function getSessionFromCookie(req) {
+  const cookie = req.headers.cookie || "";
+  const sessionMatch = cookie.match(/admin_session=([^;]+)/);
+  return sessionMatch ? sessionMatch[1] : null;
+}
+
+function setSessionCookie(res, sessionId) {
+  res.setHeader("Set-Cookie", `admin_session=${sessionId}; Path=/; HttpOnly; Max-Age=${ADMIN_SESSION_DURATION / 1000}; SameSite=Strict`);
+}
+
+function clearSessionCookie(res) {
+  res.setHeader("Set-Cookie", "admin_session=; Path=/; HttpOnly; Max-Age=0");
+}
+
+function isAdminAuthenticated(req) {
+  const sessionId = getSessionFromCookie(req);
+  if (!sessionId) return false;
+  const session = sessions.get(sessionId);
+  if (!session) return false;
+  if (Date.now() > session.expiresAt) {
+    sessions.delete(sessionId);
+    return false;
+  }
+  return true;
+}
+
 async function handleApi(req, res, url) {
   if (req.method === "GET" && stores[url.pathname]) {
     sendJson(res, 200, await readJsonStore(stores[url.pathname]));
@@ -114,8 +151,30 @@ async function handleApi(req, res, url) {
     return true;
   }
 
-  if (url.pathname.startsWith("/api/")) {
-    sendJson(res, 404, { ok: false, error: "API route not found." });
+  if (req.method === "POST" && url.pathname === "/api/admin/login") {
+    const payload = JSON.parse((await readBody(req)) || "{}");
+    if (payload.email === ADMIN_EMAIL && payload.username === ADMIN_USERNAME && payload.password === ADMIN_PASSWORD) {
+      const sessionId = generateSessionId();
+      sessions.set(sessionId, { email: ADMIN_EMAIL, expiresAt: Date.now() + ADMIN_SESSION_DURATION });
+      setSessionCookie(res, sessionId);
+      sendJson(res, 200, { ok: true, message: "Login successful" });
+    } else {
+      sendJson(res, 401, { ok: false, error: "Invalid credentials" });
+    }
+    return true;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/admin/logout") {
+    clearSessionCookie(res);
+    const sessionId = getSessionFromCookie(req);
+    if (sessionId) sessions.delete(sessionId);
+    sendJson(res, 200, { ok: true, message: "Logout successful" });
+    return true;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/admin/check-session") {
+    const isAuth = isAdminAuthenticated(req);
+    sendJson(res, 200, { authenticated: isAuth });
     return true;
   }
 

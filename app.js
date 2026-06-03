@@ -5,9 +5,9 @@ const SecurityUtils = {
   get MPESA_PHONE() { return this.decode("MDc5ODQ2MjgxNQ=="); },
   get WHATSAPP_PHONE() { return this.decode("MjU0Nzk4NDYyODE1"); },
   get MPESA_ENDPOINT() { return this.decode("L2FwaS9tcGVzYS9zdGstcHVzaA=="); },
-  get ADMIN_USERNAME() { return this.decode("SVNBQUMh"); },
+  get ADMIN_USERNAME() { return this.decode("SVNBQUMu"); },
   get ADMIN_PASSWORD() { return this.decode("bW9zZTIz"); },
-  get ADMIN_EMAIL() { return this.decode("bW9zZWlzYWFjNUBnbWFpbC5jb20="); },
+  get ADMIN_EMAIL() { return this.decode("bW9zZWlzYWFjOUBnbWFpbC5jb20="); },
   get API_ENDPOINTS() {
     return {
       projects: this.decode("L2FwaS9wcm9qZWN0cw=="),
@@ -1622,10 +1622,87 @@ function injectContactInfo() {
   });
 }
 
-renderGradeDashboard();
+async function checkAdminSession() {
+  try {
+    const res = await fetch("/api/admin/check-session");
+    const data = await res.json();
+    return data.authenticated;
+  } catch {
+    return false;
+  }
+}
+
+async function initializeAdminSession() {
+  const isAuthenticated = await checkAdminSession();
+  if (isAuthenticated) {
+    elements.adminSection?.classList.remove("hidden-section");
+    document.getElementById("adminLoginBand")?.classList.add("hidden-section");
+  } else {
+    elements.adminSection?.classList.add("hidden-section");
+  }
+}
+
+elements.adminAreaButton?.addEventListener("click", async () => {
+  const isAuth = await checkAdminSession();
+  if (isAuth) {
+    elements.adminSection?.classList.toggle("hidden-section");
+  } else {
+    document.getElementById("adminLoginBand")?.classList.toggle("hidden-section");
+  }
+});
+
+elements.adminLoginForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = elements.adminEmail?.value;
+  const username = elements.adminUsername?.value;
+  const password = elements.adminPassword?.value;
+
+  try {
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, username, password })
+    });
+
+    if (res.ok) {
+      elements.adminLoginStatus.textContent = "Login successful! Refreshing...";
+      elements.adminLoginStatus.style.color = "green";
+      setTimeout(() => location.reload(), 1000);
+    } else {
+      elements.adminLoginStatus.textContent = "Invalid credentials";
+      elements.adminLoginStatus.style.color = "red";
+    }
+  } catch {
+    elements.adminLoginStatus.textContent = "Network error";
+    elements.adminLoginStatus.style.color = "red";
+  }
+});
+
+const logoutBtn = document.createElement("button");
+logoutBtn.type = "button";
+logoutBtn.textContent = "Logout";
+logoutBtn.className = "secondary-button logout-btn";
+logoutBtn.style.marginTop = "1rem";
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await fetch("/api/admin/logout", { method: "POST" });
+    location.reload();
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+});
+
+const adminBand = document.getElementById("adminBand");
+if (adminBand && !adminBand.querySelector(".logout-btn")) {
+  const layout = adminBand.querySelector(".admin-layout");
+  if (layout) {
+    layout.appendChild(logoutBtn);
+  }
+}
 setupFilters();
 renderQuickTypes();
 restoreAdminAccess();
+initializeAdminSession();
 bindEvents();
 injectContactInfo();
 renderResources();

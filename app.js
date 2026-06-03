@@ -609,7 +609,7 @@ function sortResources(resources) {
 function renderResources() {
   const resources = getAllResources();
   const filtered = sortResources(resources.filter(resourceMatches));
-  elements.statResources.textContent = resources.length;
+  if (elements.statResources) elements.statResources.textContent = resources.length;
   elements.activeContext.textContent = `${filtered.length} material(s) showing for ${state.grade}, ${state.subject}, ${state.type}`;
   setActiveMaterialLink();
 
@@ -1382,21 +1382,23 @@ function bindEvents() {
     elements.adminAreaButton.addEventListener("click", openAdminLogin);
   }
 
-  elements.gradeList.addEventListener("click", (event) => {
-    const toggle = event.target.closest("[data-grade-toggle]");
-    const chip = event.target.closest("[data-subject]");
+  if (elements.gradeList) {
+    elements.gradeList.addEventListener("click", (event) => {
+      const toggle = event.target.closest("[data-grade-toggle]");
+      const chip = event.target.closest("[data-subject]");
 
-    if (toggle) {
-      const card = toggle.closest(".grade-card");
-      const isOpen = card.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
-    }
+      if (toggle) {
+        const card = toggle.closest(".grade-card");
+        const isOpen = card.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", String(isOpen));
+      }
 
-    if (chip) {
-      setGradeSubject(chip.dataset.grade, chip.dataset.subject);
-      showToast(`${chip.dataset.grade} ${chip.dataset.subject} selected.`);
-    }
-  });
+      if (chip) {
+        setGradeSubject(chip.dataset.grade, chip.dataset.subject);
+        showToast(`${chip.dataset.grade} ${chip.dataset.subject} selected.`);
+      }
+    });
+  }
 
   elements.resourceGrid.addEventListener("click", (event) => {
     const payButton = event.target.closest("[data-pay]");

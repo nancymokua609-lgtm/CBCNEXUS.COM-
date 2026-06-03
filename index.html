@@ -50,20 +50,9 @@
   <body>
     <header class="site-header">
       <div class="top-strip">
-        <a href="#resources" data-material-link="Notes">Notes</a>
-        <a href="#resources" data-material-link="Schemes of Work">Schemes of Work</a>
-        <a href="#resources" data-material-link="Lesson Plan">Lesson Plans</a>
-        <a href="#resources" data-material-link="Records of Work">Records of Work</a>
-        <a href="#resources" data-material-link="Assessment Test">Assessment Tests</a>
-        <a href="#resources" data-material-link="Topical Questions">Topical Questions</a>
-        <a href="#resources" data-material-link="Holiday Workbooks">Holiday Workbooks</a>
-        <a href="#resources" data-material-link="Past Papers">Past Papers</a>
-        <a href="#resources" data-material-link="Marking Schemes">Marking Schemes</a>
-        <a href="#resources" data-material-link="Quizzes">Quizzes</a>
-        <a href="#cbcProjects">CBC Projects</a>
-        <a href="#holidayTuition">Holiday Tuition</a>
-        <a href="#aiHomework">AI Homework Helper</a>
-        <a href="#resources" data-material-link="Study Guides">Study Guides</a>
+        <a href="#tuition">Holiday Tuition</a>
+        <a href="/#contact">Contact</a>
+        <a href="/#about">About</a>
       </div>
 
       <nav class="main-nav" aria-label="Main navigation">
@@ -75,15 +64,8 @@
           </span>
         </a>
         <div class="nav-actions">
-          <a class="mpesa-header-button" href="#payments" id="headerMpesaButton">M-Pesa ***</a>
-          <a class="whatsapp-button" href="https://wa.me/254xxx" target="_blank" rel="noopener">WhatsApp</a>
-          <button class="cart-button" id="cartButton" type="button">Cart <span id="cartCount">0</span></button>
           <a class="danger-blink-button" href="#holidayTuition">Book Holiday Tuition</a>
-          <a class="ghost-button" href="#cbcProjects">CBC Projects</a>
-          <a class="ghost-button" href="#freeCbcResources">Free CBC</a>
-          <a class="ghost-button" href="#aiHomework">AI Helper</a>
-          <a class="ghost-button" href="#payments">Payments</a>
-          <a class="primary-button" href="#resources">Browse Resources</a>
+          <a class="primary-button" href="#referFriend">Refer Friend</a>
         </div>
       </nav>
     </header>
@@ -304,61 +286,6 @@
         </form>
       </section>
 
-      <section id="freeCbcResources" class="info-band info-band-light">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Free CBC downloads</p>
-            <h2>Get Free CBC Resources Here</h2>
-            <p>Use these starter resources for revision, lesson preparation, and learner practice.</p>
-          </div>
-        </div>
-        <div class="download-grid">
-          <a class="download-tile" href="resources/grade-1-mathematics-notes.txt" download>Grade 1 Mathematics Notes</a>
-          <a class="download-tile" href="resources/grade-8-english-lesson-plan.txt" download>Grade 8 English Lesson Plan</a>
-          <a class="download-tile" href="resources/grade-7-mathematics-topical-questions.txt" download>Grade 7 Topical Questions</a>
-          <a class="download-tile" href="#resources">Browse More CBC Resources</a>
-        </div>
-      </section>
-
-      <section id="cbcProjects" class="content-band">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">CBC project centre</p>
-            <h2>CBC Projects Upload</h2>
-            <p>Upload learner projects, teacher project guides, assessment rubrics, and project evidence for review.</p>
-          </div>
-          <a class="primary-button" href="#projectUploadForm">Upload Project</a>
-        </div>
-        <form id="projectUploadForm" class="admin-form feature-form">
-          <div class="form-row">
-            <label>
-              Project Title
-              <input id="projectTitleInput" required placeholder="Grade 6 Agriculture Project">
-            </label>
-            <label>
-              Grade
-              <select id="projectGradeInput"></select>
-            </label>
-          </div>
-          <div class="form-row">
-            <label>
-              Subject
-              <input id="projectSubjectInput" required placeholder="Agriculture">
-            </label>
-            <label>
-              Upload File
-              <input id="projectFileInput" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip">
-            </label>
-          </div>
-          <label>
-            Project Notes
-            <textarea id="projectNotesInput" rows="4" required placeholder="Describe the project, rubric, materials, and expected evidence."></textarea>
-          </label>
-          <button class="primary-button" type="submit">Submit CBC Project</button>
-          <p id="projectStatus" class="form-status" aria-live="polite"></p>
-        </form>
-      </section>
-
       <section id="quizCentre" class="info-band">
         <div class="section-heading">
           <div>
@@ -394,34 +321,6 @@
           <h3>Progress Report</h3>
           <div id="progressReport"></div>
         </div>
-      </section>
-
-      <section id="aiHomework" class="content-band">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">AI learning support</p>
-            <h2>AI Homework Helper</h2>
-            <p>Ask a homework question and get a guided explanation that helps the learner think through the answer.</p>
-          </div>
-        </div>
-        <form id="homeworkForm" class="admin-form feature-form">
-          <div class="form-row">
-            <label>
-              Grade
-              <select id="homeworkGradeInput"></select>
-            </label>
-            <label>
-              Subject
-              <input id="homeworkSubjectInput" required placeholder="Mathematics">
-            </label>
-          </div>
-          <label>
-            Homework Question
-            <textarea id="homeworkQuestionInput" rows="5" required placeholder="Type the learner's homework question here."></textarea>
-          </label>
-          <button class="primary-button" type="submit">Ask AI Helper</button>
-        </form>
-        <div id="homeworkAnswer" class="ai-answer" aria-live="polite"></div>
       </section>
 
       <section class="page-directory info-band info-band-light" aria-label="Website pages">
@@ -481,64 +380,6 @@
         </div>
       </section>
 
-      <section id="resources" class="content-band">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Teaching and learning materials</p>
-            <h2>Resource Library</h2>
-          </div>
-        <div class="price-pill">Set custom pricing <strong>per resource</strong></div>
-        </div>
-
-        <div class="filters" aria-label="Resource filters">
-          <label>
-            Grade
-            <select id="gradeFilter"></select>
-          </label>
-          <label>
-            Subject
-            <select id="subjectFilter"></select>
-          </label>
-          <label>
-            Material
-            <select id="typeFilter"></select>
-          </label>
-          <label>
-            Search
-            <input id="searchFilter" type="search" placeholder="Search by title or description">
-          </label>
-          <label>
-            Term
-            <select id="termFilter">
-              <option>All Terms</option>
-              <option>Term 1</option>
-              <option>Term 2</option>
-              <option>Term 3</option>
-            </select>
-          </label>
-          <label>
-            Access
-            <select id="accessFilter">
-              <option>All Access</option>
-              <option>Free Samples</option>
-              <option>Paid Resources</option>
-            </select>
-          </label>
-          <label>
-            Sort
-            <select id="sortFilter">
-              <option>Latest</option>
-              <option>Popular</option>
-              <option>Price Low to High</option>
-              <option>Price High to Low</option>
-            </select>
-          </label>
-        </div>
-
-        <div id="activeContext" class="active-context" aria-live="polite"></div>
-        <div id="resourceGrid" class="resource-grid"></div>
-      </section>
-
       <section class="seo-band" aria-label="CBE resource topics">
         <h2>CBE Teaching and Learning Resources in Kenya</h2>
         <p>
@@ -562,55 +403,6 @@
           <button data-landing-search="KNEC Rubrics">KNEC Rubrics</button>
           <button data-landing-search="Holiday Assignments Kenya">Holiday Assignments Kenya</button>
           <button data-landing-search="Topical Questions with Answers">Topical Questions with Answers</button>
-        </div>
-      </section>
-
-      <section id="payments" class="payment-band">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">M-Pesa and WhatsApp checkout</p>
-            <h2>Pay and confirm your resource order</h2>
-          </div>
-          <div class="price-pill">M-Pesa payment phone: <strong>***</strong></div>
-        </div>
-
-        <div class="payment-layout">
-          <form id="paymentForm" class="payment-form">
-            <div class="form-row">
-              <label>
-                Customer Phone Number
-                <input id="customerPhoneInput" type="tel" required placeholder="07XXXXXXXX">
-              </label>
-              <label>
-                Amount
-                <input id="amountInput" type="number" min="1" value="150" required>
-              </label>
-            </div>
-            <label>
-              Selected Resource
-              <input id="selectedResourceInput" required placeholder="Choose a resource from the library">
-            </label>
-            <div class="payment-actions">
-              <button class="primary-button" type="submit">Pay with M-Pesa</button>
-              <a id="whatsappOrderButton" class="whatsapp-button" href="https://wa.me/254xxx" target="_blank" rel="noopener">Order on WhatsApp</a>
-            </div>
-            <p id="paymentStatus" class="form-status" aria-live="polite"></p>
-          </form>
-
-          <div class="payment-card">
-            <h3>Payment contacts</h3>
-            <p><strong>M-Pesa:</strong> ***</p>
-            <p><strong>WhatsApp:</strong> ***</p>
-            <p>
-              The M-Pesa button is ready to call a live Daraja/STK backend at
-              <code>/api/mpesa/stk-push</code> when Safaricom API credentials are added.
-              Until then, buyers can pay manually and send confirmation on WhatsApp.
-            </p>
-          </div>
-        </div>
-        <div class="records-panel">
-          <h3>Payment records</h3>
-          <div id="paymentRecordsList" class="records-list"></div>
         </div>
       </section>
 
